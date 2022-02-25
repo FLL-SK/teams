@@ -50,16 +50,17 @@ block content
                         button(type='button', class='close' data-dismiss='modal') &times;
                         h4 Zmeniť heslo
                     div(class='modal-body')
-                        div(class='form-group has-feedback')
-                            label Pôvodné heslo
-                            input(id='oldPwd' type='password', placeholder='pôvodné heslo' name='oldPassword' class="form-control")
-                            span(class="glyphicon form-control-feedback")
-                        div(class='form-group')
-                            label Nové heslo
-                            input(id='newPwd' type='password', placeholder='nové heslo' name='newPassword' class="form-control")
-                        div(class='form-group')
-                            label Nové heslo - ešte raz
-                            input(id='newPwdConf' type='password', placeholder='nové heslo potvrdenie' name='newPasswordConf' class="form-control")
+                        form
+                            div(class='form-group has-feedback')
+                                label Pôvodné heslo
+                                input(id='oldPwd' type='password', placeholder='pôvodné heslo' name='oldPassword' class="form-control")
+                                span(class="glyphicon form-control-feedback")
+                            div(class='form-group')
+                                label Nové heslo
+                                input(id='newPwd' type='password', placeholder='nové heslo' name='newPassword' class="form-control")
+                            div(class='form-group')
+                                label Nové heslo - ešte raz
+                                input(id='newPwdConf' type='password', placeholder='nové heslo potvrdenie' name='newPasswordConf' class="form-control")
                     div(class='modal-footer')
                         div(class='row')
                             div(class='col-sm-12')
