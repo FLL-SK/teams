@@ -140,7 +140,8 @@ viewInvOrg.loadInvoices = function (invOrgId) {
                     .append($('<th>').append('Suma'))
                     .append($('<th>').append('Vystavená'))
                     .append($('<th>').append('Splatná'))
-                    .append($('<th>').append('Zaplatená'));
+                    .append($('<th>').append('Zaplatená'))
+                    .append($('<th>').append('Export'));
                 t.append(c);
 
                 res.list.forEach(function (item) {
@@ -187,11 +188,31 @@ viewInvOrg.loadInvoices = function (invOrgId) {
                         );
                     else c.append('');
 
+                    const exportBtn = $('<button id="E2S' +
+                        item._id +
+                        '" class="btn btn-default btnExp2SF">'
+                    ).append('SF');
+
+                    c.append(exportBtn);
+
                     t.append(c);
                 });
                 $('#allInvoices>tr:odd').addClass('bg-info');
                 libInvoice.initInvoiceButtons(function () {
                     viewInvOrg.loadInvoices(invOrgId);
+                });
+
+                $('.btnExp2SF').on('click', function (event) {
+                    libInvoice.exportToSF(this.id.substr(3), function (
+                        res,
+                        err
+                    ) {
+                        if (err) alert('Chyba exporte do Superfaktury.', err);
+                        else {
+                            alert('Faktura vyexportovana.');
+                            location.reload(true);
+                        }
+                    });
                 });
             } else {
                 t.text('Žiadne faktúry');
