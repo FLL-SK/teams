@@ -209,8 +209,7 @@ viewInvOrg.loadInvoices = function (invOrgId) {
                     ) {
                         if (err) alert('Chyba exporte do Superfaktury.', err);
                         else {
-                            alert('Faktura vyexportovana.');
-                            location.reload(true);
+                            alert(`Faktura ${res.data?res.data.no:''} vyexportovana.`);
                         }
                     });
                 });

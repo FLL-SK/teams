@@ -84,8 +84,6 @@ router.get('/:id', async function (req, res, next) {
 
     if (cmd) next();
     else {
-        let i = await Team.populate(req.invoice, 'team');
-        //console.log("INV=",req.invoice);
         res.render('invoice', {
             inv: req.invoice,
             siteUrl: siteUrl,
@@ -764,13 +762,16 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res, next
                             throw new Error("Failed mapping invoice to SF invoice");
                         }
                         const ret = await libSF.postSFInvoice(sfi);
-                        if (ret) r.result = 'ok';
-                        logINFO(
-                            'Invoice exported to SF. id=%s no=%s by user=%s',
-                            req.invoice._id,
-                            req.invoice.number,
-                            req.user.username
-                        );
+                        if (ret) {
+                            r.result = 'ok';
+                            r.data = {id:req.invoice.id, no:req.invoice.number};
+                            logINFO(
+                                'Invoice exported to SF. id=%s no=%s by user=%s',
+                                req.invoice._id,
+                                req.invoice.number,
+                                req.user.username
+                            );
+                        }
                     } catch (err) {
                         r.error = err;
                         logWARN('Failed exporting to SF. err=%s', err.message);
