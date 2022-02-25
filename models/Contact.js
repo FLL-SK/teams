@@ -17,7 +17,7 @@ ContactSchema.testData = function(rec, prefix) {
     rec.name = prefix + 'Cntct';
     rec.phone = prefix + 'Phn';
     rec.mobile = prefix + 'Mob';
-    rec.email = prefix + 'Eml';
+    rec.email = prefix + '@eml.co';
 
     return rec;
 };

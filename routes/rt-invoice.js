@@ -10,6 +10,7 @@ const router = express.Router();
 const email = require('../lib/email');
 
 const libInvoice = require('../lib/invoice');
+const libSF = require('../lib/superfaktura');
 const libFmt = require('../lib/fmt');
 const libPerm = require('../lib/permissions');
 
@@ -752,6 +753,29 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res, next
                     logWARN('Failed reloading invoice bill-to. err=%s', err.message);
                 }
                 break;
+            case 'exportToSF':
+                    if (!req.user.permissions.isInvoicingOrgManager && !req.user.permissions.isAdmin) {
+                        throw new Error('Invoice export to Superfaktura - Permission denied');
+                    }
+                    try {
+                        debug('Sending invoice to Superfaktura inv=%s', req.invoice.id);
+                        const sfi = libSF.mapInvoiceToSFInvoice(req.invoice);
+                        if (!sfi) {
+                            throw new Error("Failed mapping invoice to SF invoice");
+                        }
+                        const ret = await libSF.postSFInvoice(sfi);
+                        if (ret) r.result = 'ok';
+                        logINFO(
+                            'Invoice exported to SF. id=%s no=%s by user=%s',
+                            req.invoice._id,
+                            req.invoice.number,
+                            req.user.username
+                        );
+                    } catch (err) {
+                        r.error = err;
+                        logWARN('Failed exporting to SF. err=%s', err.message);
+                    }
+                    break;
             default:
                 debug('cmd=unknown');
                 break;

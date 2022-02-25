@@ -2,6 +2,31 @@
 
 var libInvoice = {};
 
+libInvoice.exportToSF = function(invId, cb){
+    console.log('Exporting invoice to Superfaktura '+invId);
+    (typeof cb === 'function') || (cb = libCommon.noop);
+    $.post("/invoice/"+invId,
+        {
+            cmd: 'exportToSF'
+        },
+        function (res) {
+            console.log("exportToSF: Server returned",res);
+            if (res.result == "ok") {
+                console.log("invoice exported to SF");
+                cb(res);
+            } else {
+                console.log("Error while exporting invoice to SF",res);
+                cb(res,{message:"Error while exporting invoice to Superfaktura"});
+            }
+        }
+    )
+        .fail(function (err) {
+            console.log("Invoice export failed",err);
+            cb(null,err);
+        });
+
+};
+
 libInvoice.createTaxInvoice = function(invId, cb){
     console.log('Creating tax invoice for '+invId);
     (typeof cb === 'function') || (cb = libCommon.noop);

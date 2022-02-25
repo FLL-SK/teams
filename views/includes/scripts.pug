@@ -18,4 +18,5 @@ script(src='https://www.google.com/recaptcha/api.js' )
 link(rel="stylesheet" href="/stylesheets/style.css" type="text/css" )
 
 // Frontend scripts are build from fresh sources: npm run build:fe
-script(src='/javascripts/fe.js')
+- var fetoday = '/javascripts/fe.js?rnd='+new Date().toISOString()
+script(src=fetoday)
