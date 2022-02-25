@@ -39,7 +39,7 @@ router.param('id', async function (req, res, next) {
         };
 
     try {
-        inv = await Invoice.findById(invoiceId, {}, { lean: false });
+        inv = await Invoice.findById(invoiceId, {}, { lean: false }).populate('team').exec();
         reqq.invoice = inv;
         if (!inv) throw new Error('invoice not found');
 
@@ -759,7 +759,6 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res, next
                     }
                     try {
                         debug('Sending invoice to Superfaktura inv=%s', req.invoice.id);
-                        req.invoice.populate('team');
                         const sfi = libSF.mapInvoiceToSFInvoice(req.invoice);
                         if (!sfi) {
                             throw new Error("Failed mapping invoice to SF invoice");
