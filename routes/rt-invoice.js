@@ -759,6 +759,7 @@ router.post('/:id', cel.ensureLoggedIn('/login'), async function (req, res, next
                     }
                     try {
                         debug('Sending invoice to Superfaktura inv=%s', req.invoice.id);
+                        req.invoice.populate('team');
                         const sfi = libSF.mapInvoiceToSFInvoice(req.invoice);
                         if (!sfi) {
                             throw new Error("Failed mapping invoice to SF invoice");
