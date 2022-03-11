@@ -62,6 +62,7 @@ libCommon.convertSys2LocaleDate = function (d, locale) {
 
 libCommon.Prog2CSV = function (data, sep, locales, incEml) {
     var str = '';
+    var inclMembers = false;
 
     // header
     var header =
@@ -76,6 +77,10 @@ libCommon.Prog2CSV = function (data, sep, locales, incEml) {
         'team.name' +
         sep +
         'team.registeredOn' +
+        sep +
+        'team.girlCount' +
+        sep +
+        'team.boyCount' +
         sep +
         'coach.name' +
         sep +
@@ -107,47 +112,50 @@ libCommon.Prog2CSV = function (data, sep, locales, incEml) {
         sep +
         'team.org.city' +
         sep +
-        'team.org.postCode' +
-        sep +
-        'member.01.fullName' +
-        sep +
-        'member.01.dob' +
-        sep +
-        'member.02.fullName' +
-        sep +
-        'member.02.dob' +
-        sep +
-        'member.03.fullName' +
-        sep +
-        'member.03.dob' +
-        sep +
-        'member.04.fullName' +
-        sep +
-        'member.04.dob' +
-        sep +
-        'member.05.fullName' +
-        sep +
-        'member.05.dob' +
-        sep +
-        'member.06.fullName' +
-        sep +
-        'member.06.dob' +
-        sep +
-        'member.07.fullName' +
-        sep +
-        'member.07.dob' +
-        sep +
-        'member.08.fullName' +
-        sep +
-        'member.08.dob' +
-        sep +
-        'member.09.fullName' +
-        sep +
-        'member.09.dob' +
-        sep +
-        'member.10.fullName' +
-        sep +
-        'member.10.dob';
+        'team.org.postCode';
+    if (inclMembers)
+        header += 
+            sep +
+            'member.01.fullName' +
+            sep +
+            'member.01.dob' +
+            sep +
+            'member.02.fullName' +
+            sep +
+            'member.02.dob' +
+            sep +
+            'member.03.fullName' +
+            sep +
+            'member.03.dob' +
+            sep +
+            'member.04.fullName' +
+            sep +
+            'member.04.dob' +
+            sep +
+            'member.05.fullName' +
+            sep +
+            'member.05.dob' +
+            sep +
+            'member.06.fullName' +
+            sep +
+            'member.06.dob' +
+            sep +
+            'member.07.fullName' +
+            sep +
+            'member.07.dob' +
+            sep +
+            'member.08.fullName' +
+            sep +
+            'member.08.dob' +
+            sep +
+            'member.09.fullName' +
+            sep +
+            'member.09.dob' +
+            sep +
+            'member.10.fullName' +
+            sep +
+            'member.10.dob';
+        
     if (incEml)
         header +=
             sep +
@@ -184,6 +192,8 @@ libCommon.Prog2CSV = function (data, sep, locales, incEml) {
         line += sep + t.event.teamNumber;
         line += sep + t.name;
         line += sep + new Date(t.event.registeredOn).toLocaleDateString(locales);
+        line += sep + t.girlCount;
+        line += sep + t.boyCount;
 
         for (var j = 0; j < 4; j++) {
             if (j < t.coaches.length) {
@@ -210,10 +220,12 @@ libCommon.Prog2CSV = function (data, sep, locales, incEml) {
             line += sep + sep + sep;
         }
 
-        for (var j = 0; j < 10; j++) {
-            if (j < t.members.length)
-                line += sep + t.members[j].fullName + sep + t.members[j].dateOfBirth;
-            else line += sep + ' ' + sep + ' ';
+        if (inclMembers) {
+            for (var j = 0; j < 10; j++) {
+                if (j < t.members.length)
+                    line += sep + t.members[j].fullName + sep + t.members[j].dateOfBirth;
+                else line += sep + ' ' + sep + ' ';
+            }
         }
 
         if (incEml)
